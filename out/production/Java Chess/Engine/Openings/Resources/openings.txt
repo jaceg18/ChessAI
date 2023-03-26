@@ -1,0 +1,9 @@
+Pc5 Nc6
+Pc6 Pd5
+Pc5 Pd6
+Pe5 Nf6
+Pe6 Ke7
+Nf6 Pd5
+Pb6 Bb7
+Pg6 Bg7
+Pd5 Pe5
