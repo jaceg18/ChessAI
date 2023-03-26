@@ -5,7 +5,6 @@ import Logic.Pieces.Pawn;
 import Logic.Pieces.Piece;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Evaluations {
     public static int evaluate(Board board, boolean white){

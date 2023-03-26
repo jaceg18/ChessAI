@@ -23,10 +23,7 @@ public class AI {
             GUI.previousMoves.push(move);
         }
     }
-
-    private int positionsEvaluated = 0;
     public Move search(int depth){
-        positionsEvaluated = 0;
         int alpha = Integer.MIN_VALUE;
         int beta = Integer.MAX_VALUE;
         int bestScore = 0;
@@ -42,13 +39,11 @@ public class AI {
                 bestScore = score;
                 bestMove = move;
             }
-            alpha = Math.max(alpha, bestScore);
+            alpha = bestScore;
         }
-        System.out.println(positionsEvaluated);
         return bestMove;
     }
     private int min(Board board, int alpha, int beta, int depth){
-        positionsEvaluated++;
         if (depth == 0){
             return evaluate(board, false);
         }
@@ -71,7 +66,6 @@ public class AI {
         return minScore;
     }
     private int max(Board board, int alpha, int beta, int depth){
-        positionsEvaluated++;
         if (depth == 0){
             return evaluate(board, false);
         }
