@@ -5,6 +5,9 @@ import Logic.Board;
 import Logic.Movement.Move;
 import Logic.Pieces.Piece;
 import View.GUI;
+import View.Resources.Sounds.AudioPlayer;
+
+import java.util.ArrayList;
 
 import static Engine.Evaluations.evaluate;
 
@@ -12,6 +15,8 @@ public class AI {
 
     Board board;
     OpeningGenerator openingGenerator;
+
+    boolean white;
     public AI(Board board){
         this.board = board;
         this.openingGenerator = new OpeningGenerator(board);
@@ -20,6 +25,7 @@ public class AI {
         if (!openingGenerator.move()) {
             Move move = search(depth);
             board.makeMove(move);
+            AudioPlayer.playSound(move.getCapturedPiece() != null);
             GUI.previousMoves.push(move);
         }
     }
@@ -47,8 +53,8 @@ public class AI {
         if (depth == 0){
             return evaluate(board, false);
         }
-        Piece blackKing = board.getKing(false);
-        if (blackKing == null){
+        Piece king = board.getKing(false);
+        if (king == null){
             // if moves lead to black king missing, we will immediately prune branch.\
             return Integer.MIN_VALUE;
         }
@@ -86,5 +92,6 @@ public class AI {
         }
         return maxScore;
     }
+
 
 }

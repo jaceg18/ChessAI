@@ -4,6 +4,7 @@ import Engine.Evaluations;
 import Logic.Board;
 import Logic.Movement.Move;
 import Logic.Pieces.Piece;
+import View.Resources.Sounds.AudioPlayer;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -160,6 +161,7 @@ public class GUI extends JPanel implements MouseListener, MouseMotionListener, A
             if (board.isValidMove(board.getPieceLegalMove(selectedPiece), move)){
                 selectedPiece.setHasMoved(true);
                 board.makeMove(move);
+                AudioPlayer.playSound(move.getCapturedPiece() != null);
                 previousMoves.push(move);
                 whitesMove = false;
 

@@ -75,6 +75,17 @@ public class Board {
 
         return teamLegalMoves;
     }
+    public ArrayList<Move> getTeamCaptureMoves(boolean white){
+        ArrayList<Move> legalMoves = getTeamLegalMove(white);
+        ArrayList<Move> captureMoves = new ArrayList<>();
+        for (Move move : legalMoves) {
+            Piece capture = getPieceAt(move.getToRow(), move.getToCol());
+            if (capture != null && capture.isWhite() != white){
+                captureMoves.add(move);
+            }
+        }
+        return captureMoves;
+    }
 
     public ArrayList<Piece> getTeamPieces(boolean white) {
         ArrayList<Piece> teamPieces = new ArrayList<>();

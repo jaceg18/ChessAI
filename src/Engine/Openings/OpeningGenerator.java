@@ -4,6 +4,7 @@ import Logic.Board;
 import Logic.Movement.Move;
 import Logic.Pieces.Piece;
 import View.GUI;
+import View.Resources.Sounds.AudioPlayer;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -30,6 +31,7 @@ public class OpeningGenerator {
         if (opening.size() > 0) {
             Move openingMove = getOpeningMove();
             board.makeMove(openingMove);
+            AudioPlayer.playSound(openingMove.getCapturedPiece() != null);
             GUI.previousMoves.push(openingMove);
             return true;
         }
