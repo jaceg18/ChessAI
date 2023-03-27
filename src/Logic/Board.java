@@ -208,7 +208,6 @@ public class Board {
             // Move the rook
             int fromRow = move.getFromRow();
             int fromCol = move.getFromCol();
-            int toRow = move.getToRow();
             int toCol = move.getToCol();
             int rookToCol = (toCol > fromCol) ? toCol - 1 : toCol + 1;
             int rookCol = (toCol > fromCol) ? 7 : 0;
