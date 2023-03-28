@@ -43,12 +43,23 @@ public class GUI extends JPanel implements MouseListener, MouseMotionListener, A
 
         Thread console = new Thread(() -> {
             while (true){
-               if (scanner.hasNextLine())
-                   if (scanner.nextLine().equals("undo"))
-                       if (!previousMoves.isEmpty())
-                           board.unmakeMove(previousMoves.pop());
-                       else
-                           System.out.println("Last move was null?");
+               if (scanner.hasNextLine()) {
+                   switch (scanner.nextLine().toLowerCase()){
+                       case "undo":
+                           if (!previousMoves.isEmpty())
+                               board.unmakeMove(previousMoves.pop());
+                           else
+                               System.out.println("Null last move...");
+                           break;
+                       case "eval","evaluation":
+                           System.out.println("Evaluation: " + Evaluations.evaluate(board, true));
+                           break;
+                       case "depth", "level":
+                           System.out.println(depth);
+                           break;
+
+                   }
+               }
            }
         });
         setPreferredSize(new Dimension(BOARD_SIZE, BOARD_SIZE));
@@ -179,7 +190,6 @@ public class GUI extends JPanel implements MouseListener, MouseMotionListener, A
         repaint();
         if (!whitesMove) {
             board.ai.move(board, depth);
-            System.out.println(Evaluations.evaluate(board, true));
             whitesMove = true;
         } else {
             repaint();

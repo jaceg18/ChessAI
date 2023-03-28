@@ -97,6 +97,31 @@ public class Board {
         return teamPieces;
     }
 
+    public ArrayList<Move> getTeamCheckMoves(boolean white){
+        ArrayList<Move> allTeamLegalMoves = getTeamLegalMove(white);
+        ArrayList<Move> checkMoves = new ArrayList<>();
+        King opponentsKing = getKing(!white);
+        for (Move move : allTeamLegalMoves){
+            if (move.getToRow() == opponentsKing.getRow() && move.getToCol() == opponentsKing.getCol()) {
+                checkMoves.add(move);
+            }
+        }
+        return checkMoves;
+    }
+
+    public ArrayList<Move> getPieceCaptures(Piece piece){
+        ArrayList<Move> allTeamCaptureMoves = getTeamCaptureMoves(piece.isWhite());
+        ArrayList<Move> pieceCaptureMoves = new ArrayList<>();
+        for (Move move : allTeamCaptureMoves){
+            if (arePiecesEqual(move.getPiece(), piece))
+                pieceCaptureMoves.add(move);
+        }
+        return pieceCaptureMoves;
+    }
+    public boolean arePiecesEqual(Piece piece1, Piece piece2){
+        return piece1.getRow() == piece2.getRow() && piece1.getCol() == piece2.getCol() && piece1.getName().equals(piece2.getName());
+    }
+
     public ArrayList<Piece> getAllPieces() {
         ArrayList<Piece> allPieces = new ArrayList<>();
         allPieces.addAll(getTeamPieces(true));
