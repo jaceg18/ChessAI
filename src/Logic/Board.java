@@ -2,6 +2,7 @@ package Logic;
 import Engine.AI;
 import Logic.Movement.Move;
 import Logic.Pieces.*;
+import View.GUI;
 
 import java.util.ArrayList;
 
@@ -42,7 +43,6 @@ public class Board {
         ai = new AI(this);
 
     }
-
     public ArrayList<Move> getPieceLegalMove(Piece piece) {
         // Removes moves that lead to or don't prevent a check.
         ArrayList<Move> legalMoves = piece.getLegalMoves(this, piece.getRow(), piece.getCol());
@@ -316,5 +316,26 @@ public class Board {
         for (Piece pawn : pawns)
             if (pawn.getRow() == 0 || pawn.getRow() == 7)
                 setPieceAt(pawn.getRow(), pawn.getCol(), new Queen(pawn.isWhite(), pawn.getRow(), pawn.getCol(), 4, 900));
+    }
+
+    public int getHash() {
+        int hash = 0;
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                Piece piece = pieces[i][j];
+                if (piece != null) {
+                    int pieceValue = piece.getValue();
+                    if (!piece.isWhite()) {
+                        pieceValue = -pieceValue;
+                    }
+                    int positionValue = (i * 8) + j;
+                    hash += pieceValue * positionValue;
+                }
+            }
+        }
+        if (!GUI.whitesMove) {
+            hash = -hash;
+        }
+        return hash;
     }
 }

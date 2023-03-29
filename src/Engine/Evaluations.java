@@ -50,7 +50,7 @@ public class Evaluations {
     }
     private static int getPawnPromotionScore(Board board, boolean white) {
         int score = 0;
-        int promotionWeight = 400;
+        int promotionWeight = 900;
         int[][] promotionSquares = (white) ? new int[][]{{0, 0}, {0, 1}, {0, 2}, {0, 3}, {0, 4}, {0, 5}, {0, 6}, {0, 7}}
                 : new int[][]{{7, 0}, {7, 1}, {7, 2}, {7, 3}, {7, 4}, {7, 5}, {7, 6}, {7, 7}};
 
@@ -97,4 +97,5 @@ public class Evaluations {
 
         return orderedMoves;
     }
+
 }

@@ -1,6 +1,7 @@
 package Engine;
 
-import Engine.Openings.OpeningGenerator;
+import Engine.Openings.OpeningBook;
+import Engine.Openings.Resources.OpeningHelper;
 import Logic.Board;
 import Logic.Movement.Move;
 import Logic.Pieces.Piece;
@@ -10,26 +11,31 @@ import View.Resources.Sounds.AudioPlayer;
 import java.util.ArrayList;
 
 import static Engine.Evaluations.evaluate;
-
 public class AI {
 
     Board board;
-    OpeningGenerator openingGenerator;
+    OpeningBook openingBook;
 
-    private int nullMoveReduction = 1;
-
-    boolean white;
+    int openMovesLeft;
     public AI(Board board){
         this.board = board;
-        this.openingGenerator = new OpeningGenerator(board);
+        this.openingBook = new OpeningBook(board);
+        this.openMovesLeft = 5;
     }
     public void move(Board board, int depth){
-        if (!openingGenerator.move()) {
-            Move move = search(depth);
-            board.makeMove(move);
-            AudioPlayer.playSound(move.getCapturedPiece() != null);
-            GUI.previousMoves.push(move);
+        String gameNotation = OpeningHelper.getGameInNotation();
+        Move move = openingBook.getMove(gameNotation);
+
+        if (openMovesLeft <= 0 || move == null){
+            move = search(depth);
         }
+
+        board.makeMove(move);
+        openMovesLeft--;
+        GUI.previousMoves.push(move);
+        GUI.gameMoves.add(move);
+        AudioPlayer.playSound(move.getCapturedPiece() != null);
+
     }
     public Move search(int depth){
         int alpha = Integer.MIN_VALUE;

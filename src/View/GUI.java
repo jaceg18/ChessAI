@@ -13,6 +13,7 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Stack;
 
@@ -26,11 +27,12 @@ public class GUI extends JPanel implements MouseListener, MouseMotionListener, A
     private int selectedRow = -1;
     private int selectedCol = -1;
     private Piece selectedPiece;
+    public static ArrayList<Move> gameMoves = new ArrayList<>();
     // Usages
     Board board;
     Timer timer;
     int[] toHighlight = null;
-    boolean whitesMove = true;
+    public static boolean whitesMove = true;
     int depth;
 
     public static Stack<Move> previousMoves = new Stack<>();
@@ -46,8 +48,11 @@ public class GUI extends JPanel implements MouseListener, MouseMotionListener, A
                if (scanner.hasNextLine()) {
                    switch (scanner.nextLine().toLowerCase()){
                        case "undo":
-                           if (!previousMoves.isEmpty())
+                           if (!previousMoves.isEmpty()) {
+                               Move move = previousMoves.pop();
+                               gameMoves.remove(move);
                                board.unmakeMove(previousMoves.pop());
+                           }
                            else
                                System.out.println("Null last move...");
                            break;
@@ -172,6 +177,7 @@ public class GUI extends JPanel implements MouseListener, MouseMotionListener, A
             if (board.isValidMove(board.getPieceLegalMove(selectedPiece), move)){
                 selectedPiece.setHasMoved(true);
                 board.makeMove(move);
+                gameMoves.add(move);
                 AudioPlayer.playSound(move.getCapturedPiece() != null);
                 previousMoves.push(move);
                 whitesMove = false;
@@ -193,6 +199,11 @@ public class GUI extends JPanel implements MouseListener, MouseMotionListener, A
             whitesMove = true;
         } else {
             repaint();
+        }
+        int eval = Evaluations.evaluate(board, true);
+        if (eval == Integer.MIN_VALUE ||  eval == Integer.MAX_VALUE){
+            System.out.println("Checkmate!");
+            timer.stop();
         }
     }
 
